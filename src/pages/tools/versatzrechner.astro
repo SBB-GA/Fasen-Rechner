@@ -2,10 +2,26 @@
 import Layout from '../../layouts/Layout.astro';
 import Body from '../../components/Body.astro'
 import HomeButton from '../../components/HomeButton.astro';
+
+import Select from '../../components/Select.jsx';
+
+const options = [
+  { id: 1, name: 'Durward Reynoldsssssss' },
+  { id: 2, name: 'Kenton Towne' },
+  { id: 3, name: 'Therese Wunsch' },
+  { id: 4, name: 'Benedict Kessler' },
+  { id: 5, name: 'Katelyn Rohan' },
+]
+
 ---
 
 <Layout title='Versatzrechner'>
   <Body>
     <HomeButton />
+    <div class="w-72 flex"> { // with w-auto the checkbox adapts it's size to the content, else its remains fixed at the specified size }
+      <Select options={options}
+						  label="Label"
+						  name="yo-name" client:load/>
+    </div>
   </Body>
 </Layout>
