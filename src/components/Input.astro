@@ -1,0 +1,54 @@
+---
+interface Props {
+  label: string;
+  identifier: string;
+}
+
+const { label, identifier } = Astro.props;
+---
+
+<number-input data-identifier={identifier} class="w-full">
+  <div class="mt-12">
+    <p class="text-black font-extralight mb-1 sm:text-sm">{label}:</p>
+    <input
+      type="text"
+      name={identifier}
+      id={identifier}
+      class="w-full border-2 border-black py-2 pl-3 pr-10 text-left shadow-md sm:text-sm focus:outline-none"
+    />
+  </div>
+</number-input>
+
+<script>
+  class Input extends HTMLElement {
+    constructor() {
+      super();
+      function formatNumber() {
+        var numberInput = document.getElementById(
+          `${identifier}`,
+        ) as HTMLInputElement;
+        var value = numberInput.value;
+        var regex = /^(\d+)(?!\.\d+)$/;
+
+        if (regex.test(value)) {
+          // If the value matches the regex, format it by adding ".0"
+          var formattedValue = value.replace(regex, "$1.0");
+          numberInput.value = formattedValue;
+        } else {
+          // If the value does not match the regex, try to parse it as a float and format it
+          var number = parseFloat(value);
+          if (isNaN(number)) {
+            // Reset the input field if it's not a valid number
+            numberInput.value = "";
+          }
+        }
+      }
+
+      const identifier = this.dataset.identifier;
+      document
+        .getElementById(`${identifier}`)
+        .addEventListener("blur", formatNumber);
+    }
+  }
+  customElements.define("number-input", Input);
+</script>
