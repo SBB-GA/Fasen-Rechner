@@ -2,19 +2,21 @@
 interface Props {
   label: string;
   identifier: string;
+  disabled?: boolean;
 }
 
-const { label, identifier } = Astro.props;
+const { label, identifier, disabled = false } = Astro.props;
 ---
 
 <number-input data-identifier={identifier} class="w-full">
-  <div class="mt-12">
-    <p class="text-black font-extralight mb-1 sm:text-sm">{label}:</p>
+  <div class="">
+    <p class=`text-black font-extralight mb-1`>{label}:</p>
     <input
       type="text"
       name={identifier}
       id={identifier}
-      class="w-full border-2 border-black py-2 pl-3 pr-10 text-left shadow-md sm:text-sm focus:outline-none"
+      {disabled}
+      class=`w-full border-2 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none ${disabled ? "bg-gray-200 border-gray-600 text-gray-700" : "border-black text-black"}`
     />
   </div>
 </number-input>

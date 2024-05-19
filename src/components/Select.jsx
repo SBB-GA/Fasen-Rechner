@@ -18,9 +18,9 @@ export default function Select({ options, label, name }) {
   return (
     <div className="w-full">
       <Listbox value={selected} onChange={setSelected} name={name}>
-        <Label className="text-black font-extralight mb-4 sm:text-sm">{label}:</Label>
-        <div className="relative mt-1">
-          <ListboxButton className="relative bg-white border-2 border-black w-full cursor-pointer py-2 pl-3 pr-10 text-left shadow-md focus:outline-none sm:text-sm">
+        <Label className="text-black font-extralight mb-4">{label}:</Label>
+        <div className="relative">
+          <ListboxButton className="relative bg-white border-2 border-black w-full cursor-pointer py-2 pl-3 pr-10 text-left shadow-md focus:outline-none">
             <span className="block truncate">{selected.name}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
@@ -38,7 +38,7 @@ export default function Select({ options, label, name }) {
           >
             <ListboxOptions
               //anchor="bottom"
-              className="bg-white border-2 border-black absolute mt-1 max-h-60 w-full overflow-auto my-1 text-base shadow-lg sm:text-sm z-10"
+              className="bg-white border-2 border-black absolute mt-1 max-h-60 w-full overflow-auto my-1 text-base shadow-lg focus:outline-none z-10"
             >
               {options.map((option, optionIdx) => (
                 <ListboxOption
