@@ -12,12 +12,18 @@ import { Fragment, useState } from "react";
 
 export default function Select({ options, label, name }) {
   const [selected, setSelected] = useState(options[0]);
-  
+
+  function setSelectedWithEvent (e) {
+    setSelected(e)
+    let element = document.getElementsByName("tool_type[name]")[0];
+    element.dispatchEvent(new Event(`${name}_change`));
+  }
+
   // Parent Container: with w-auto the checkbox adapts it's size to the content, else its remains fixed at the specified size
-  
+
   return (
-    <div className="w-full">
-      <Listbox value={selected} onChange={setSelected} name={name}>
+    <div className="w-full" id={`${name}`}>
+      <Listbox value={selected} onChange={setSelectedWithEvent} name={name}>
         <Label className="text-black font-extralight mb-4">{label}:</Label>
         <div className="relative">
           <ListboxButton className="relative bg-white border-2 border-black w-full cursor-pointer py-2 pl-3 pr-10 text-left shadow-md focus:outline-none">
@@ -56,8 +62,6 @@ export default function Select({ options, label, name }) {
                       >
                         {option.name}
                       </span>
-                      
-                      
                     </>
                   )}
                 </ListboxOption>

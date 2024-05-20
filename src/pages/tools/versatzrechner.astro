@@ -37,18 +37,18 @@ const tool_types = [
           client:load
         />
         <div class="flex w-full gap-4 justify-stretch">
-          <Input label="Schneiden-⌀" identifier="d1" client:load />
-          <Input label="Spitzen-⌀" identifier="d2" client:load disabled />
-          <Input label="Schaft-⌀" identifier="d3" client:load disabled />
+          <Input label="Schneiden-⌀" identifier="d1" />
+          <Input label="Spitzen-⌀" identifier="d2" />
+          <Input label="Schaft-⌀" identifier="d3" />
         </div>
         <div class="flex w-full gap-4 justify-stretch">
-          <Input label="Schneidenlänge" identifier="l1" client:load />
-          <Input label="Mittellänge" identifier="l2" client:load />
-          <Input label="Stumpflänge" identifier="l3" client:load />
+          <Input label="Schneidenlänge" identifier="l1" />
+          <Input label="Mittellänge" identifier="l2" />
+          <Input label="Stumpflänge" identifier="l3" />
         </div>
         <div class="flex w-full gap-4 justify-stretch">
-          <Input label="Spitzenwinkel" identifier="a1" client:load />
-          <Input label="Schulterwinkel" identifier="a2" client:load />
+          <Input label="Spitzenwinkel" identifier="a1" />
+          <Input label="Schulterwinkel" identifier="a2" />
         </div>
       </section>
       <div>
@@ -65,16 +65,22 @@ const tool_types = [
 </Layout>
 
 <script>
-  function enableInput(input) {
+  function enableInput(input: HTMLInputElement) {
     input.disabled = false;
     input.className =
       "w-full border-2 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none bg-white border-black text-black";
   }
-  function disableInput(input) {
+  function disableInput(input: HTMLInputElement) {
     input.disabled = true;
     input.className =
       "w-full border-2 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none bg-gray-200 border-gray-600 text-gray-700";
   }
+
+  // Tool Properties
+  // Tool Type
+  let tool_type = document.getElementsByName(
+    "tool_type[name]",
+  )[0] as HTMLInputElement; // just take the first element to stop error messages as getElementsByName can return a list, however we make sure to only use each name once"
 
   // Number Inputs for tool
   let d1 = document.getElementById("d1") as HTMLInputElement;
@@ -88,6 +94,46 @@ const tool_types = [
   let a1 = document.getElementById("a1") as HTMLInputElement;
   let a2 = document.getElementById("a2") as HTMLInputElement;
 
-  disableInput(a2)
-  enableInput(d3)
+  // Disable / Enable all the input for tool_type
+  tool_type.addEventListener("tool_type_change", () => {
+    setTimeout(() => {
+      // gfallt mer zwar ned die lösig, aber sie funktioniert. sProblem isch dass element.value retrieved wird bevor sDOM upgdated isch und drum es Timeout hilft
+      let element = document.getElementsByName(
+        "tool_type[name]",
+      )[0] as HTMLInputElement;
+      console.log(element, element.value);
+      if (element.value === "Fasenfräser") {
+        enableInput(d1);
+        enableInput(d2);
+        disableInput(d3);
+        enableInput(l1);
+        disableInput(l2);
+        disableInput(l3);
+        enableInput(a1);
+        disableInput(a2);
+      } else if (element.value === "Kombientgrater") {
+        enableInput(d1);
+        enableInput(d2);
+        enableInput(d3);
+        enableInput(l1);
+        enableInput(l2);
+        enableInput(l3);
+        enableInput(a1);
+        enableInput(a2);
+      } else if (element.value === "Schwalbenschwanz") {
+        enableInput(d1);
+        disableInput(d2);
+        enableInput(d3);
+        enableInput(l1);
+        disableInput(l2);
+        enableInput(l3);
+        disableInput(a1);
+        enableInput(a2);
+      } else {
+        alert("tool_type undefined");
+      }
+    }, 0);
+  });
+
+  tool_type.dispatchEvent(new Event("tool_type_change"));
 </script>
