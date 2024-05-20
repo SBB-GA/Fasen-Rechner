@@ -37,18 +37,18 @@ const tool_types = [
           client:load
         />
         <div class="flex w-full gap-4 justify-stretch">
-          <Input label="Schneiden-⌀" identifier="d1" />
-          <Input label="Spitzen-⌀" identifier="d2" disabled />
-          <Input label="Schaft-⌀" identifier="d3" disabled />
+          <Input label="Schneiden-⌀" identifier="d1" client:load />
+          <Input label="Spitzen-⌀" identifier="d2" client:load disabled />
+          <Input label="Schaft-⌀" identifier="d3" client:load disabled />
         </div>
         <div class="flex w-full gap-4 justify-stretch">
-          <Input label="Schneidenlänge" identifier="l1" />
-          <Input label="Mittellänge" identifier="l2" />
-          <Input label="Stumpflänge" identifier="l3" />
+          <Input label="Schneidenlänge" identifier="l1" client:load />
+          <Input label="Mittellänge" identifier="l2" client:load />
+          <Input label="Stumpflänge" identifier="l3" client:load />
         </div>
         <div class="flex w-full gap-4 justify-stretch">
-          <Input label="Spitzenwinkel" identifier="a1" />
-          <Input label="Schulterwinkel" identifier="a2" />
+          <Input label="Spitzenwinkel" identifier="a1" client:load />
+          <Input label="Schulterwinkel" identifier="a2" client:load />
         </div>
       </section>
       <div>
@@ -63,3 +63,31 @@ const tool_types = [
     </div>
   </Body>
 </Layout>
+
+<script>
+  function enableInput(input) {
+    input.disabled = false;
+    input.className =
+      "w-full border-2 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none bg-white border-black text-black";
+  }
+  function disableInput(input) {
+    input.disabled = true;
+    input.className =
+      "w-full border-2 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none bg-gray-200 border-gray-600 text-gray-700";
+  }
+
+  // Number Inputs for tool
+  let d1 = document.getElementById("d1") as HTMLInputElement;
+  let d2 = document.getElementById("d2") as HTMLInputElement;
+  let d3 = document.getElementById("d3") as HTMLInputElement;
+
+  let l1 = document.getElementById("l1") as HTMLInputElement;
+  let l2 = document.getElementById("l2") as HTMLInputElement;
+  let l3 = document.getElementById("l3") as HTMLInputElement;
+
+  let a1 = document.getElementById("a1") as HTMLInputElement;
+  let a2 = document.getElementById("a2") as HTMLInputElement;
+
+  disableInput(a2)
+  enableInput(d3)
+</script>
