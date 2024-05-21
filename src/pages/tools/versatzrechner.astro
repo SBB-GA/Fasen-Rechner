@@ -20,6 +20,14 @@ const tool_types = [
   { id: 2, name: "Kombientgrater" },
   { id: 3, name: "Schwalbenschwanz" },
 ];
+const chamfer_types = [
+  { id: 1, name: "Regulär" },
+  { id: 2, name: "Rückwärts" },
+];
+const offset_types = [
+  { id: 1, name: "Oberseite" },
+  { id: 2, name: "Unterseite" },
+];
 ---
 
 <Layout title="Versatzrechner">
@@ -29,13 +37,20 @@ const tool_types = [
       class="py-24 px-16 w-full max-w-6xl h-full grid lg:grid-cols-2 md:grid-cols-1 gap-8"
     >
       <section class="flex flex-col gap-4">
-        <Select options={tools} label="Werkzeug" name="tool" client:load />
-        <Select
-          options={tool_types}
-          label="Werkzeugart"
-          name="tool_type"
-          client:load
-        />
+        <div class="text-center">
+          <h1 class="text-2xl font-light border-b-2 border-black px-4 py-2">
+            Werkzeug
+          </h1>
+        </div>
+        <div class="flex w-full gap-4 justify-stretch">
+          <Select options={tools} label="Werkzeug" name="tool" client:load />
+          <Select
+            options={tool_types}
+            label="Werkzeugart"
+            name="tool_type"
+            client:load
+          />
+        </div>
         <div class="flex w-full gap-4 justify-stretch">
           <Input label="Schneiden-⌀" identifier="d1" />
           <Input label="Spitzen-⌀" identifier="d2" />
@@ -54,9 +69,33 @@ const tool_types = [
       <div>
         <img src="/debug_placeholder_img.png" alt="" />
       </div>
-      <div>
-        <Select options={tools} label="Label" name="yo-name" client:load />
-      </div>
+      <section class="flex flex-col gap-4">
+        <div class="text-center">
+          <h1 class="text-2xl font-light border-b-2 border-black px-4 py-2">
+            Fase
+          </h1>
+        </div>
+        <div class="flex w-full gap-4 justify-stretch">
+          <Select
+            options={chamfer_types}
+            label="Art"
+            name="chamfer_type"
+            client:load
+          />
+          <Input label="Fase Axial" identifier="Ca" />
+          <Input label="Fase Radial" identifier="Cr" />
+        </div>
+        <div class="flex w-full gap-4 justify-stretch">
+          <Select
+            options={offset_types}
+            label="Versatzrichtung"
+            name="offset_type"
+            client:load
+          />
+          <Input label="Versatz Axial" identifier="Oa" />
+          <Input label="Versatz Radial" identifier="Or" />
+        </div>
+      </section>
       <div>
         <img src="/debug_placeholder_img.png" alt="" />
       </div>
@@ -102,7 +141,6 @@ const tool_types = [
       let element = document.getElementsByName(
         "tool_type[name]",
       )[0] as HTMLInputElement;
-      console.log(element, element.value);
       if (element.value === "Fasenfräser") {
         enableInput(d1);
         enableInput(d2);
@@ -137,4 +175,7 @@ const tool_types = [
   });
 
   tool_type.dispatchEvent(new Event("tool_type_change"));
+
+  // Chamfer Properties
+  // ...
 </script>
