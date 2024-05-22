@@ -15,7 +15,7 @@ export default function Select({ options, label, name }) {
 
   function setSelectedWithEvent (e) {
     setSelected(e)
-    let element = document.getElementsByName("tool_type[name]")[0];
+    let element = document.getElementsByName(`${name}[name]`)[0];
     element.dispatchEvent(new Event(`${name}_change`));
   }
 

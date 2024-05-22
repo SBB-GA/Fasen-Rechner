@@ -3,8 +3,10 @@ import Layout from "../../layouts/Layout.astro";
 import Body from "../../components/Body.astro";
 import HomeButton from "../../components/HomeButton.astro";
 import Input from "../../components/Input.astro";
-
 import Select from "../../components/Select.jsx";
+
+// JS
+import test from "../../utils/test.js";
 
 import cutters from "../../../public/cutters.json";
 
@@ -104,6 +106,8 @@ const offset_types = [
 </Layout>
 
 <script>
+import { Battery0Icon, type Bars4Icon } from "@heroicons/react/20/solid";
+
   function enableInput(input: HTMLInputElement) {
     input.disabled = false;
     input.className =
@@ -177,5 +181,64 @@ const offset_types = [
   tool_type.dispatchEvent(new Event("tool_type_change"));
 
   // Chamfer Properties
-  // ...
+  let ca = document.getElementById("Ca") as HTMLInputElement;
+  let cr = document.getElementById("Cr") as HTMLInputElement;
+  let oa = document.getElementById("Oa") as HTMLInputElement;
+  let or = document.getElementById("Or") as HTMLInputElement;
+
+  let chamfer_type = document.getElementsByName(
+    "chamfer_type[name]",
+  )[0] as HTMLInputElement;
+  let offset_type = document.getElementsByName(
+    "offset_type[name]",
+  )[0] as HTMLInputElement;
+  
+  // recalculate once any of the fields change
+  chamfer_type.addEventListener("chamfer_type_change", () => {
+    setTimeout(() => {
+    updateChamfer()
+    }, 0)
+  })
+  offset_type.addEventListener("offset_type_change", () => {
+    setTimeout(() => {
+    updateChamfer()
+    }, 0)
+  })
+
+  function updateChamfer() {
+    // these values would need to be retrieved from the actual inputs
+    const d1 = 4
+    const d2 = 0
+    const d3 = 0 
+    const l1 = 2;
+    const a1 = 90;
+    
+    // here we need to do some trickery to calculate the radial / axial components based on whats entered
+    const ca = 0.25
+    const cr = 0.25
+    const oa = 0.25
+    const or = 0.25
+
+    const chamfer_type = (document.getElementsByName("chamfer_type[name]")[0] as HTMLInputElement).value;
+    const offset_type = (document.getElementsByName("offset_type[name]")[0] as HTMLInputElement).value;
+    
+    let wall_offset = 0;
+    let floor_offset = 0;
+    // case distinction
+    // this part works for simple Chamfer mills of type "Fasenfräser"
+    if (offset_type == "Oberseite") {
+      wall_offset = - (cr + or)
+      floor_offset = oa - l1
+    } else if (offset_type == "Unterseite") {
+      wall_offset = or - d1/2
+      floor_offset = - (ca + oa)
+    } else {
+      alert("Something went wrong 1000")
+    }
+
+    console.log(`Wandaufmass: ${wall_offset}, Bodenaufmass: ${floor_offset}`)
+    
+    
+  }
+
 </script>
