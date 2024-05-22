@@ -50,6 +50,7 @@ const { label, identifier, disabled = false } = Astro.props;
       document
         .getElementById(`${identifier}`)
         .addEventListener("blur", formatNumber);
+      document.getElementById(`${identifier}`).addEventListener("format_number_input", formatNumber);
     }
   }
   customElements.define("number-input", Input);

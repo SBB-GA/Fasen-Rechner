@@ -106,8 +106,6 @@ const offset_types = [
 </Layout>
 
 <script>
-import { Battery0Icon, type Bars4Icon } from "@heroicons/react/20/solid";
-
   function enableInput(input: HTMLInputElement) {
     input.disabled = false;
     input.className =
@@ -192,53 +190,130 @@ import { Battery0Icon, type Bars4Icon } from "@heroicons/react/20/solid";
   let offset_type = document.getElementsByName(
     "offset_type[name]",
   )[0] as HTMLInputElement;
-  
+
   // recalculate once any of the fields change
   chamfer_type.addEventListener("chamfer_type_change", () => {
     setTimeout(() => {
-    updateChamfer()
-    }, 0)
-  })
+      updateChamfer();
+    }, 0);
+  });
   offset_type.addEventListener("offset_type_change", () => {
     setTimeout(() => {
-    updateChamfer()
-    }, 0)
-  })
+      updateChamfer();
+    }, 0);
+  });
+
+  // eventlistener chamfer inputs
+  // onblur --> update the other field
+  // --> update chamfer
+  ca.addEventListener("blur", () => {
+    // update chamfer radial
+    // only need to do the calculation when the values actually changed
+    // the trickery with all the parseFloat and stuff needs to be done to satisfy the typescript lsp (mimimi comparing string to number)
+    if (parseFloat(ca.dataset.precise).toFixed(3) != ca.value) {
+      const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
+      const ca_value = ca.value;
+      const value = parseFloat(ca_value) * Math.tan(a1_rad / 2);
+      if (!isNaN(value)) {
+        cr.value = `${value.toFixed(3)}`;
+        cr.dataset.precise = value.toString();
+      }
+    }
+  });
+  cr.addEventListener("blur", () => {
+    // update chamfer radial
+    if (parseFloat(cr.dataset.precise).toFixed(3) != cr.value) {
+      const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
+      const cr_value = cr.value;
+      const value = parseFloat(cr_value) / Math.tan(a1_rad / 2);
+      if (!isNaN(value)) {
+        ca.value = `${value.toFixed(3)}`;
+        ca.dataset.precise = value.toString();
+      }
+    }
+  });
+
+  oa.addEventListener("blur", () => {
+    // update chamfer radial
+    // only need to do the calculation when the values actually changed
+    // the trickery with all the parseFloat and stuff needs to be done to satisfy the typescript lsp (mimimi comparing string to number)
+    if (parseFloat(oa.dataset.precise).toFixed(3) != oa.value) {
+      const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
+      const oa_value = oa.value;
+      const value = parseFloat(oa_value) * Math.tan(a1_rad / 2);
+      if (!isNaN(value)) {
+        or.value = `${value.toFixed(3)}`;
+        or.dataset.precise = value.toString();
+      }
+    }
+  });
+  or.addEventListener("blur", () => {
+    // update chamfer radial
+    if (parseFloat(or.dataset.precise).toFixed(3) != or.value) {
+      const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
+      const or_value = cr.value;
+      const value = parseFloat(or_value) / Math.tan(a1_rad / 2);
+      if (!isNaN(value)) {
+        oa.value = `${value.toFixed(3)}`;
+        oa.dataset.precise = value.toString();
+      }
+    }
+  });
+
 
   function updateChamfer() {
     // these values would need to be retrieved from the actual inputs
-    const d1 = 4
-    const d2 = 0
-    const d3 = 0 
+    // Number Inputs for tool
+    //const d1 = document.getElementById("d1") as HTMLInputElement;
+    //const d2 = document.getElementById("d2") as HTMLInputElement;
+    //const d3 = document.getElementById("d3") as HTMLInputElement;
+
+    //const l1 = document.getElementById("l1") as HTMLInputElement;
+    //const l2 = document.getElementById("l2") as HTMLInputElement;
+    //const l3 = document.getElementById("l3") as HTMLInputElement;
+
+    //const a1 = document.getElementById("a1") as HTMLInputElement;
+    //const a2 = document.getElementById("a2") as HTMLInputElement;
+
+    const d1 = 4;
+    const d2 = 0;
+    const d3 = 0;
     const l1 = 2;
     const a1 = 90;
-    
-    // here we need to do some trickery to calculate the radial / axial components based on whats entered
-    const ca = 0.25
-    const cr = 0.25
-    const oa = 0.25
-    const or = 0.25
 
-    const chamfer_type = (document.getElementsByName("chamfer_type[name]")[0] as HTMLInputElement).value;
-    const offset_type = (document.getElementsByName("offset_type[name]")[0] as HTMLInputElement).value;
-    
+    // here we need to do some trickery to calculate the radial / axial components based on whats entered
+    const ca = 0.25;
+    const cr = 0.25;
+    const oa = 0.25;
+    const or = 0.25;
+
+    const chamfer_type = (
+      document.getElementsByName("chamfer_type[name]")[0] as HTMLInputElement
+    ).value;
+    const offset_type = (
+      document.getElementsByName("offset_type[name]")[0] as HTMLInputElement
+    ).value;
+
     let wall_offset = 0;
     let floor_offset = 0;
     // case distinction
     // this part works for simple Chamfer mills of type "Fasenfräser"
-    if (offset_type == "Oberseite") {
-      wall_offset = - (cr + or)
-      floor_offset = oa - l1
-    } else if (offset_type == "Unterseite") {
-      wall_offset = or - d1/2
-      floor_offset = - (ca + oa)
-    } else {
-      alert("Something went wrong 1000")
+    // TODO: disable "Regulär" and "Rückwärts" based on selected tooltype
+
+    if (chamfer_type == "Regulär") {
+      if (offset_type == "Oberseite") {
+        wall_offset = -(cr + or);
+        floor_offset = oa - l1;
+      } else if (offset_type == "Unterseite") {
+        wall_offset = or + d2 / 2 - d1 / 2;
+        floor_offset = -(ca + oa);
+      } else {
+        alert("Something went wrong 1000");
+      }
+    } else if (chamfer_type == "Rückwärts") {
+      // some other meth
     }
 
-    console.log(`Wandaufmass: ${wall_offset}, Bodenaufmass: ${floor_offset}`)
-    
-    
+    console.log(`Wandaufmass: ${wall_offset}, Bodenaufmass: ${floor_offset}`);
   }
-
 </script>
