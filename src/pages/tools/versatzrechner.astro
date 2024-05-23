@@ -97,6 +97,21 @@ const offset_types = [
           <Input label="Versatz Axial" identifier="Oa" />
           <Input label="Versatz Radial" identifier="Or" />
         </div>
+        <div class="flex w-full justify-stretch border-b-2 border-black mt-8 mb-6"></div>
+        <div class="flex w-full gap-4 justify-around">
+          <div class="flex flex-col w-auto">
+            <p class="font-extralight">Wandaufmass:</p>
+            <p id="offset-wall" class="block w-full text-center py-2 bg-sky-100 border-black border-2 shadow-md">
+              -0.1
+            </p>
+          </div>
+          <div class="flex flex-col w-auto">
+            <p class="font-extralight">Bodenaufmass:</p>
+            <p id="offset-floor" class="block w-full text-center py-2 bg-sky-100 border-black border-2 shadow-md">
+              -1.1
+            </p>
+          </div>
+        </div>
       </section>
       <div>
         <img src="/debug_placeholder_img.png" alt="" />
@@ -217,8 +232,8 @@ const offset_types = [
       if (!isNaN(value)) {
         cr.value = `${value.toFixed(3)}`;
         cr.dataset.precise = value.toString();
-        ca.dispatchEvent(new Event("format_number_input"))
-        cr.dispatchEvent(new Event("format_number_input"))
+        ca.dispatchEvent(new Event("format_number_input"));
+        cr.dispatchEvent(new Event("format_number_input"));
       }
     }
   });
@@ -231,8 +246,8 @@ const offset_types = [
       if (!isNaN(value)) {
         ca.value = `${value.toFixed(3)}`;
         ca.dataset.precise = value.toString();
-        ca.dispatchEvent(new Event("format_number_input"))
-        cr.dispatchEvent(new Event("format_number_input"))
+        ca.dispatchEvent(new Event("format_number_input"));
+        cr.dispatchEvent(new Event("format_number_input"));
       }
     }
   });
@@ -248,8 +263,8 @@ const offset_types = [
       if (!isNaN(value)) {
         or.value = `${value.toFixed(3)}`;
         or.dataset.precise = value.toString();
-        oa.dispatchEvent(new Event("format_number_input"))
-        or.dispatchEvent(new Event("format_number_input"))
+        oa.dispatchEvent(new Event("format_number_input"));
+        or.dispatchEvent(new Event("format_number_input"));
       }
     }
   });
@@ -262,12 +277,11 @@ const offset_types = [
       if (!isNaN(value)) {
         oa.value = `${value.toFixed(3)}`;
         oa.dataset.precise = value.toString();
-        oa.dispatchEvent(new Event("format_number_input"))
-        or.dispatchEvent(new Event("format_number_input"))
+        oa.dispatchEvent(new Event("format_number_input"));
+        or.dispatchEvent(new Event("format_number_input"));
       }
     }
   });
-
 
   function updateChamfer() {
     // these values would need to be retrieved from the actual inputs
