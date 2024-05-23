@@ -26,24 +26,28 @@ const { label, identifier, disabled = false } = Astro.props;
     constructor() {
       super();
       function formatNumber() {
-        var numberInput = document.getElementById(
+        let numberInput = document.getElementById(
           `${identifier}`,
         ) as HTMLInputElement;
-        var value = numberInput.value;
-        var regex = /^(\d+)(?!\.\d+)$/;
-
-        if (regex.test(value)) {
-          // If the value matches the regex, format it by adding ".0"
-          var formattedValue = value.replace(regex, "$1.0");
-          numberInput.value = formattedValue;
-        } else {
-          // If the value does not match the regex, try to parse it as a float and format it
-          var number = parseFloat(value);
-          if (isNaN(number)) {
-            // Reset the input field if it's not a valid number
-            numberInput.value = "";
-          }
+        let valueIn = numberInput.value;
+        if (valueIn == "") {
+          return
         }
+        let valueInArray = valueIn.split(".")
+        if (valueInArray.length > 2) {
+          alert("invalid input")
+          numberInput.value = ""
+          return
+        }
+        // Check if number is whole number
+        // Cases ["1"], ["1", ""], ["1", "0"]
+        if (valueInArray.length == 1 || valueInArray[1] == "" || parseFloat(valueInArray[1]) == 0) {
+          // Append one .0
+          numberInput.value = `${valueInArray[0]}.0`
+          return
+        }
+
+        numberInput.value = `${parseFloat(parseFloat(valueIn).toFixed(3))}`
       }
 
       const identifier = this.dataset.identifier;

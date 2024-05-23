@@ -217,6 +217,8 @@ const offset_types = [
       if (!isNaN(value)) {
         cr.value = `${value.toFixed(3)}`;
         cr.dataset.precise = value.toString();
+        ca.dispatchEvent(new Event("format_number_input"))
+        cr.dispatchEvent(new Event("format_number_input"))
       }
     }
   });
@@ -229,6 +231,8 @@ const offset_types = [
       if (!isNaN(value)) {
         ca.value = `${value.toFixed(3)}`;
         ca.dataset.precise = value.toString();
+        ca.dispatchEvent(new Event("format_number_input"))
+        cr.dispatchEvent(new Event("format_number_input"))
       }
     }
   });
@@ -244,6 +248,8 @@ const offset_types = [
       if (!isNaN(value)) {
         or.value = `${value.toFixed(3)}`;
         or.dataset.precise = value.toString();
+        oa.dispatchEvent(new Event("format_number_input"))
+        or.dispatchEvent(new Event("format_number_input"))
       }
     }
   });
@@ -251,11 +257,13 @@ const offset_types = [
     // update chamfer radial
     if (parseFloat(or.dataset.precise).toFixed(3) != or.value) {
       const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
-      const or_value = cr.value;
+      const or_value = or.value;
       const value = parseFloat(or_value) / Math.tan(a1_rad / 2);
       if (!isNaN(value)) {
         oa.value = `${value.toFixed(3)}`;
         oa.dataset.precise = value.toString();
+        oa.dispatchEvent(new Event("format_number_input"))
+        or.dispatchEvent(new Event("format_number_input"))
       }
     }
   });
