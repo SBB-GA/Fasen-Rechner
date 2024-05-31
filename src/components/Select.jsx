@@ -7,14 +7,27 @@ import {
   Transition,
 } from "@headlessui/react";
 
-import { ChevronUpDownIcon, CheckIcon } from "@heroicons/react/20/solid";
-import { Fragment, useState } from "react";
+import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { Fragment, useState, useEffect } from "react";
 
-export default function Select({ options, label, name }) {
-  const [selected, setSelected] = useState(options[0]);
+export default function Select({
+  options,
+  label,
+  name,
+  selected: selectedProp,
+  handleChange = () => { },
+}) {
+  const [selected, setSelected] = useState(selectedProp || options[0]);
 
-  function setSelectedWithEvent (e) {
-    setSelected(e)
+  useEffect(() => {
+    if (selectedProp !== undefined) {
+      setSelected(selectedProp);
+    }
+  }, [selectedProp]);
+
+  function setSelectedWithEvent(e) {
+    handleChange(e); // Maybe there's a need to pass the event as an argument, not quite sure to this point (31. May 2024)
+    setSelected(e);
     let element = document.getElementsByName(`${name}[name]`)[0];
     element.dispatchEvent(new Event(`${name}_change`));
   }
@@ -46,13 +59,14 @@ export default function Select({ options, label, name }) {
               //anchor="bottom"
               className="bg-white border-2 border-black absolute mt-1 max-h-60 w-full overflow-auto my-1 text-base shadow-lg focus:outline-none z-10"
             >
-              {options.map((option, optionIdx) => (
+              {options.map((option) => (
                 <ListboxOption
-                  key={optionIdx}
+                  key={option.id}
                   className={({ active }) =>
-                    `relative cursor-pointer select-none py-2 px-4 ${active ? "bg-black text-white" : "text-black"}`
+                    `relative cursor-pointer select-none py-2 px-4 ${active ? "bg-black text-white" : "text-black"} data-[disabled]:text-gray-400`
                   }
                   value={option}
+                  disabled={option.disabled}
                 >
                   {({ selected }) => (
                     <>

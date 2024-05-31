@@ -1,30 +1,71 @@
-import Select from "../components/Select"
-import Input from "../components/Input"
+import Select from "../components/Select";
+import Input from "../components/Input";
+import React, { useState } from "react";
 
 import cutters from "../../public/cutters.json";
 
-const tools = [{ id: 1, name: "... Custom Tool" }];
-let count = 2;
-for (const [key, value] of Object.entries(cutters)) {
-  tools.push({ id: count, name: key });
-  count++;
-}
-
-const tool_types = [
-  { id: 1, name: "Fasenfräser" },
-  { id: 2, name: "Kombientgrater" },
-  { id: 3, name: "Schwalbenschwanz" },
-];
-const chamfer_types = [
-  { id: 1, name: "Regulär" },
-  { id: 2, name: "Rückwärts" },
-];
-const offset_types = [
-  { id: 1, name: "Oberseite" },
-  { id: 2, name: "Unterseite" },
-];
-
 function VersatzrechnerContent() {
+  const tools = [{ id: 1, name: "... Custom Tool" }];
+  let count = 2;
+  for (const [key, value] of Object.entries(cutters)) {
+    tools.push({ id: count, name: key });
+    count++;
+  }
+
+  const tool_types = [
+    { id: 1, name: "Fasenfräser" },
+    { id: 2, name: "Kombientgrater" },
+    { id: 3, name: "Schwalbenschwanz" },
+  ];
+  const chamfer_types = [
+    { id: 1, name: "Regulär" },
+    { id: 2, name: "Rückwärts", disabled: true },
+  ];
+  const offset_types = [
+    { id: 1, name: "Oberseite" },
+    { id: 2, name: "Unterseite" },
+  ];
+
+  const [selectedToolType, setSelectedToolType] = useState(null);
+  const [chamferOptions, setChamferOptions] = useState(chamfer_types); // Maybe rename to chamferTypes
+  const [selectedChamferType, setSelectedChamferType] = useState()
+
+  const handleToolTypeChange = (element) => {
+    // element is the whole object as its entered in the tool_types list
+    setSelectedToolType(element.name);
+    // possibly change to use ids instead of name / strings
+    if (element.name == "Fasenfräser") {
+      // handle Fasenfräser stuff
+      setChamferOptions((prevOptions) =>
+        prevOptions.map((option) =>
+          option.name == "Rückwärts"
+            ? { ...option, disabled: true }
+            : { ...option, disabled: false },
+        ),
+      );
+      setSelectedChamferType(chamfer_types[0])
+    } else if (element.name == "Kombientgrater") {
+      // handle Kombientgrater stuff
+      setChamferOptions((prevOptions) =>
+        prevOptions.map((option) =>
+          option.name ? { ...option, disabled: false } : option,
+        ),
+      );
+    } else if (element.name == "Schwalbenschwanz") {
+      // handle Schwalbenschwanz stuff
+      setChamferOptions((prevOptions) =>
+        prevOptions.map((option) =>
+          option.name == "Regulär"
+            ? { ...option, disabled: true }
+            : { ...option, disabled: false },
+        ),
+      );
+      setSelectedChamferType(chamfer_types[1])
+    } else {
+      // handle weird stuff happened
+    }
+  };
+
   return (
     <>
       <div className="py-24 px-16 w-full max-w-6xl h-full grid lg:grid-cols-2 md:grid-cols-1 gap-8">
@@ -40,6 +81,7 @@ function VersatzrechnerContent() {
               options={tool_types}
               label="Werkzeugart"
               name="tool_type"
+              handleChange={handleToolTypeChange}
               client:load
             />
           </div>
@@ -69,9 +111,10 @@ function VersatzrechnerContent() {
           </div>
           <div className="flex w-full gap-4 justify-stretch">
             <Select
-              options={chamfer_types}
+              options={chamferOptions}
               label="Art"
               name="chamfer_type"
+              selected={selectedChamferType}
               client:load
             />
             <Input label="Fase Axial" identifier="Ca" />
@@ -117,4 +160,4 @@ function VersatzrechnerContent() {
   );
 }
 
-export default VersatzrechnerContent
+export default VersatzrechnerContent;
