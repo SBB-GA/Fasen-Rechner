@@ -186,15 +186,15 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
   // when tool angles change update radial and axial chamfer / offsets
   a1.addEventListener("blur", () => {
     ca.dispatchEvent(new Event("blur"))
-    // cr.dispatchEvent(new Event("blur"))
+    cr.dispatchEvent(new Event("blur"))
     oa.dispatchEvent(new Event("blur"))
-    // or.dispatchEvent(new Event("blur"))
+    or.dispatchEvent(new Event("blur"))
   })
   a2.addEventListener("blur", () => {
     ca.dispatchEvent(new Event("blur"))
-    // cr.dispatchEvent(new Event("blur"))
+    cr.dispatchEvent(new Event("blur"))
     oa.dispatchEvent(new Event("blur"))
-    // or.dispatchEvent(new Event("blur"))
+    or.dispatchEvent(new Event("blur"))
   })
 
   function updateChamfer() {
