@@ -1,13 +1,13 @@
 import Select from "../components/Select";
 import Input from "../components/Input";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import cutters from "../../public/cutters.json";
 
 function VersatzrechnerContent() {
   const tools = [{ id: 1, name: "... Custom Tool" }];
   let count = 2;
-  for (const [key, value] of Object.entries(cutters)) {
+  for (const [key] of Object.entries(cutters)) {
     tools.push({ id: count, name: key });
     count++;
   }

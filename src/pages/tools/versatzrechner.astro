@@ -103,6 +103,8 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
   chamfer_type.addEventListener("chamfer_type_change", () => {
     setTimeout(() => {
       updateChamfer();
+      ca.dispatchEvent(new Event("blur"));
+      oa.dispatchEvent(new Event("blur"));
     }, 0);
   });
   offset_type.addEventListener("offset_type_change", () => {
@@ -118,8 +120,9 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
     // update chamfer radial
     // only need to do the calculation when the values actually changed
     // the trickery with all the parseFloat and stuff needs to be done to satisfy the typescript lsp (mimimi comparing string to number)
+    const angle = chamfer_type.value == "Regulär" ? a1 : a2
     if (parseFloat(ca.dataset.precise).toFixed(3) != ca.value) {
-      const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
+      const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
       const ca_value = ca.value;
       const value = parseFloat(ca_value) * Math.tan(a1_rad / 2);
       if (!isNaN(value)) {
@@ -132,8 +135,9 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
   });
   cr.addEventListener("blur", () => {
     // update chamfer radial
+    const angle = chamfer_type.value == "Regulär" ? a1 : a2
     if (parseFloat(cr.dataset.precise).toFixed(3) != cr.value) {
-      const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
+      const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
       const cr_value = cr.value;
       const value = parseFloat(cr_value) / Math.tan(a1_rad / 2);
       if (!isNaN(value)) {
@@ -149,8 +153,9 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
     // update chamfer radial
     // only need to do the calculation when the values actually changed
     // the trickery with all the parseFloat and stuff needs to be done to satisfy the typescript lsp (mimimi comparing string to number)
+    const angle = chamfer_type.value == "Regulär" ? a1 : a2
     if (parseFloat(oa.dataset.precise).toFixed(3) != oa.value) {
-      const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
+      const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
       const oa_value = oa.value;
       const value = parseFloat(oa_value) * Math.tan(a1_rad / 2);
       if (!isNaN(value)) {
@@ -161,10 +166,12 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
       }
     }
   });
+
   or.addEventListener("blur", () => {
     // update chamfer radial
+    const angle = chamfer_type.value == "Regulär" ? a1 : a2
     if (parseFloat(or.dataset.precise).toFixed(3) != or.value) {
-      const a1_rad = (parseFloat(a1.value) * Math.PI) / 180;
+      const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
       const or_value = or.value;
       const value = parseFloat(or_value) / Math.tan(a1_rad / 2);
       if (!isNaN(value)) {
@@ -175,6 +182,20 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
       }
     }
   });
+ 
+  // when tool angles change update radial and axial chamfer / offsets
+  a1.addEventListener("blur", () => {
+    ca.dispatchEvent(new Event("blur"))
+    // cr.dispatchEvent(new Event("blur"))
+    oa.dispatchEvent(new Event("blur"))
+    // or.dispatchEvent(new Event("blur"))
+  })
+  a2.addEventListener("blur", () => {
+    ca.dispatchEvent(new Event("blur"))
+    // cr.dispatchEvent(new Event("blur"))
+    oa.dispatchEvent(new Event("blur"))
+    // or.dispatchEvent(new Event("blur"))
+  })
 
   function updateChamfer() {
     // these values would need to be retrieved from the actual inputs
