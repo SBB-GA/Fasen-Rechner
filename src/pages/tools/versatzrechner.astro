@@ -3,13 +3,13 @@ import Layout from "../../layouts/Layout.astro";
 import Body from "../../components/Body.astro";
 import HomeButton from "../../components/HomeButton.astro";
 
-import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
+import VersatzrechnerContent from "../../apps/VersatzrechnerContent";
 ---
 
 <Layout title="Versatzrechner">
   <Body>
     <HomeButton />
-    <VersatzrechnerContent client:load/>
+    <VersatzrechnerContent client:load />
   </Body>
 </Layout>
 
@@ -84,6 +84,7 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
     }, 0);
   });
 
+  // initialize the fields
   tool_type.dispatchEvent(new Event("tool_type_change"));
 
   // Chamfer Properties
@@ -120,7 +121,7 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
     // update chamfer radial
     // only need to do the calculation when the values actually changed
     // the trickery with all the parseFloat and stuff needs to be done to satisfy the typescript lsp (mimimi comparing string to number)
-    const angle = chamfer_type.value == "Regulär" ? a1 : a2
+    const angle = chamfer_type.value == "Regulär" ? a1 : a2;
     if (parseFloat(ca.dataset.precise).toFixed(3) != ca.value) {
       const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
       const ca_value = ca.value;
@@ -135,7 +136,7 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
   });
   cr.addEventListener("blur", () => {
     // update chamfer radial
-    const angle = chamfer_type.value == "Regulär" ? a1 : a2
+    const angle = chamfer_type.value == "Regulär" ? a1 : a2;
     if (parseFloat(cr.dataset.precise).toFixed(3) != cr.value) {
       const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
       const cr_value = cr.value;
@@ -153,7 +154,7 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
     // update chamfer radial
     // only need to do the calculation when the values actually changed
     // the trickery with all the parseFloat and stuff needs to be done to satisfy the typescript lsp (mimimi comparing string to number)
-    const angle = chamfer_type.value == "Regulär" ? a1 : a2
+    const angle = chamfer_type.value == "Regulär" ? a1 : a2;
     if (parseFloat(oa.dataset.precise).toFixed(3) != oa.value) {
       const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
       const oa_value = oa.value;
@@ -169,7 +170,7 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
 
   or.addEventListener("blur", () => {
     // update chamfer radial
-    const angle = chamfer_type.value == "Regulär" ? a1 : a2
+    const angle = chamfer_type.value == "Regulär" ? a1 : a2;
     if (parseFloat(or.dataset.precise).toFixed(3) != or.value) {
       const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
       const or_value = or.value;
@@ -182,46 +183,64 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
       }
     }
   });
- 
+
   // when tool angles change update radial and axial chamfer / offsets
   a1.addEventListener("blur", () => {
-    ca.dispatchEvent(new Event("blur"))
-    cr.dispatchEvent(new Event("blur"))
-    oa.dispatchEvent(new Event("blur"))
-    or.dispatchEvent(new Event("blur"))
-  })
+    ca.dispatchEvent(new Event("blur"));
+    cr.dispatchEvent(new Event("blur"));
+    oa.dispatchEvent(new Event("blur"));
+    or.dispatchEvent(new Event("blur"));
+  });
   a2.addEventListener("blur", () => {
-    ca.dispatchEvent(new Event("blur"))
-    cr.dispatchEvent(new Event("blur"))
-    oa.dispatchEvent(new Event("blur"))
-    or.dispatchEvent(new Event("blur"))
-  })
+    ca.dispatchEvent(new Event("blur"));
+    cr.dispatchEvent(new Event("blur"));
+    oa.dispatchEvent(new Event("blur"));
+    or.dispatchEvent(new Event("blur"));
+  });
 
   function updateChamfer() {
     // these values would need to be retrieved from the actual inputs
     // Number Inputs for tool
-    //const d1 = document.getElementById("d1") as HTMLInputElement;
-    //const d2 = document.getElementById("d2") as HTMLInputElement;
-    //const d3 = document.getElementById("d3") as HTMLInputElement;
+    const d1 = parseFloat(
+      (document.getElementById("d1") as HTMLInputElement).value,
+    );
+    const d2 = parseFloat(
+      (document.getElementById("d2") as HTMLInputElement).value,
+    );
+    const d3 = parseFloat(
+      (document.getElementById("d3") as HTMLInputElement).value,
+    );
 
-    //const l1 = document.getElementById("l1") as HTMLInputElement;
-    //const l2 = document.getElementById("l2") as HTMLInputElement;
-    //const l3 = document.getElementById("l3") as HTMLInputElement;
+    const l1 = parseFloat(
+      (document.getElementById("l1") as HTMLInputElement).value,
+    );
+    const l2 = parseFloat(
+      (document.getElementById("l2") as HTMLInputElement).value,
+    );
+    const l3 = parseFloat(
+      (document.getElementById("l3") as HTMLInputElement).value,
+    );
 
-    //const a1 = document.getElementById("a1") as HTMLInputElement;
-    //const a2 = document.getElementById("a2") as HTMLInputElement;
-
-    const d1 = 4;
-    const d2 = 0;
-    const d3 = 0;
-    const l1 = 2;
-    const a1 = 90;
+    const a1 = parseFloat(
+      (document.getElementById("a1") as HTMLInputElement).value,
+    );
+    const a2 = parseFloat(
+      (document.getElementById("a2") as HTMLInputElement).value,
+    );
 
     // here we need to do some trickery to calculate the radial / axial components based on whats entered
-    const ca = 0.25;
-    const cr = 0.25;
-    const oa = 0.25;
-    const or = 0.25;
+    const ca = parseFloat(
+      (document.getElementById("Ca") as HTMLInputElement).value,
+    );
+    const cr = parseFloat(
+      (document.getElementById("Cr") as HTMLInputElement).value,
+    );
+    const oa = parseFloat(
+      (document.getElementById("Oa") as HTMLInputElement).value,
+    );
+    const or = parseFloat(
+      (document.getElementById("Or") as HTMLInputElement).value,
+    );
 
     const chamfer_type = (
       document.getElementsByName("chamfer_type[name]")[0] as HTMLInputElement
@@ -230,25 +249,43 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent"
       document.getElementsByName("offset_type[name]")[0] as HTMLInputElement
     ).value;
 
-    let wall_offset = 0;
-    let floor_offset = 0;
-    // case distinction
-    // this part works for simple Chamfer mills of type "Fasenfräser"
-    // TODO: disable "Regulär" and "Rückwärts" based on selected tooltype
+    // output variables
+    let wall_offset: number;
+    let floor_offset: number;
 
+    // case distinction
     if (chamfer_type == "Regulär") {
       if (offset_type == "Oberseite") {
-        wall_offset = -(cr + or);
-        floor_offset = oa - l1;
+        // some meth
+        wall_offset = - (cr + or);
+        floor_offset = - (l2 - oa);
+        alert("regulär oberseite triggered")
       } else if (offset_type == "Unterseite") {
-        wall_offset = or + d2 / 2 - d1 / 2;
+        wall_offset = - (d1/2 - d2/2 - or)
         floor_offset = -(ca + oa);
       } else {
         alert("Something went wrong 1000");
       }
     } else if (chamfer_type == "Rückwärts") {
       // some other meth
+      // TODO: seems to work for Fasenfräser and Kombi, not for Schwalbenschwanz
+      if (offset_type == "Oberseite") {
+        // TODO: Add the stump into calculation
+        wall_offset = - (d1/2 - d3/2 - or)
+        floor_offset = - (l1 - oa - ca)
+      } else if (offset_type == "Unterseite") {
+        // TODO: Add the stump into calculation
+        wall_offset = - (cr + or)
+        floor_offset = - (l2 + oa)
+      } else {
+        alert("Something went wrong 2000");
+      }
+    } else {
+      alert("Something went wrong 3000")
     }
+
+    document.getElementById("offset-wall").innerHTML = wall_offset.toString()
+    document.getElementById("offset-floor").innerHTML = floor_offset.toString()
 
     console.log(`Wandaufmass: ${wall_offset}, Bodenaufmass: ${floor_offset}`);
   }

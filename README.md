@@ -16,10 +16,15 @@ All Astro commands are run from the root of the project, from a terminal:
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
 ## ✅ Todo's
-- [ ] add functionality to use / insert saved tools
+- [x] add functionality to use / insert saved tools
 - [ ] add all calculations
+    - [x] Fasenfräser
+    - [x] Kombientgrater
+    - [ ] Schwalbenschwanz
+    - [ ] Mittel- und Stumpflängen in Berechnung einbeziehen
     - [ ] update all calculations on any Input change
 - [ ] add ThreeJS rendering of tools and chamfering
     - [ ] Basic ThreeJS render component
     - [ ] Update render on any DOM change
     - [ ] Show tooltip what current dimension is referring to (maybe in the render itself, maybe as a popup / modal?)
+- [ ] Dokumentation schreiben
