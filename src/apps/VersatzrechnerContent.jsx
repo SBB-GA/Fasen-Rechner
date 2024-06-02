@@ -1,14 +1,14 @@
 import Select from "../components/Select";
 import Input from "../components/Input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import cutters from "../../public/cutters.json";
 
 function VersatzrechnerContent() {
   const tools = [{ id: 1, name: "... Custom Tool" }];
   let count = 2;
-  for (const [key] of Object.entries(cutters)) {
-    tools.push({ id: count, name: key });
+  for (const [key, value] of Object.entries(cutters)) {
+    tools.push({ id: count, name: key, cutter: value });
     count++;
   }
 
@@ -28,11 +28,52 @@ function VersatzrechnerContent() {
 
   const [selectedToolType, setSelectedToolType] = useState(null);
   const [chamferOptions, setChamferOptions] = useState(chamfer_types); // Maybe rename to chamferTypes
-  const [selectedChamferType, setSelectedChamferType] = useState()
+  const [selectedChamferType, setSelectedChamferType] = useState();
+
+  useEffect(() => {
+    // Example of how to handle side effects when selectedToolType changes
+    // if (selectedToolType) {
+    //   console.log(`Selected Tool Type: ${selectedToolType}`);
+    // }
+  }, [selectedToolType]);
+
+  const populateToolDimensions = (element) => {
+    if (element.id == 1) {
+      return;
+    } // if custom tool is selected we can stop
+    const cutter = element.cutter;
+    if (cutter.tool_type !== undefined) {
+      if (cutter.tool_type == 0) {
+        // Fasenfräser
+        setSelectedToolType(tool_types[0]);
+        handleToolTypeChange({ name: "Fasenfräser" }); // update available chamfer types
+      } else if (cutter.tool_type == 1) {
+        // Kombientgrater
+        setSelectedToolType(tool_types[1]);
+        handleToolTypeChange({ name: "Kombientgrater" }); // update available chamfer types
+      } else if (cutter.tool_type == 2) {
+        // Schwalbenschwanz
+        setSelectedToolType(tool_types[2]);
+        handleToolTypeChange({ name: "Schwalbenschwanz" }); // update availablel chamfer types
+      }
+    }
+    document
+      .getElementsByName("tool_type[name]")[0]
+      .dispatchEvent(new Event("tool_type_change")); // triggering the enabling / disabling of the inputs which are needed for the selected tool
+    // a1.value = cutter.a1
+    document.getElementById("a1").value = cutter.a1 ? cutter.a1 : "0";
+    document.getElementById("a2").value = cutter.a2 ? cutter.a2 : "0";
+    document.getElementById("d1").value = cutter.d1 ? cutter.d1 : "0";
+    document.getElementById("d2").value = cutter.d2 ? cutter.d2 : "0";
+    document.getElementById("d3").value = cutter.d3 ? cutter.d3 : "0";
+    document.getElementById("l1").value = cutter.l1 ? cutter.l1 : "0";
+    document.getElementById("l2").value = cutter.l2 ? cutter.l2 : "0";
+    document.getElementById("l3").value = cutter.l3 ? cutter.l3 : "0";
+  };
 
   const handleToolTypeChange = (element) => {
     // element is the whole object as its entered in the tool_types list
-    setSelectedToolType(element.name);
+    setSelectedToolType(element);
     // possibly change to use ids instead of name / strings
     if (element.name == "Fasenfräser") {
       // handle Fasenfräser stuff
@@ -43,7 +84,7 @@ function VersatzrechnerContent() {
             : { ...option, disabled: false },
         ),
       );
-      setSelectedChamferType(chamfer_types[0])
+      setSelectedChamferType(chamfer_types[0]);
     } else if (element.name == "Kombientgrater") {
       // handle Kombientgrater stuff
       setChamferOptions((prevOptions) =>
@@ -60,7 +101,7 @@ function VersatzrechnerContent() {
             : { ...option, disabled: false },
         ),
       );
-      setSelectedChamferType(chamfer_types[1])
+      setSelectedChamferType(chamfer_types[1]);
     } else {
       // handle weird stuff happened
     }
@@ -76,11 +117,18 @@ function VersatzrechnerContent() {
             </h1>
           </div>
           <div className="flex w-full gap-4 justify-stretch">
-            <Select options={tools} label="Werkzeug" name="tool" client:load />
+            <Select
+              options={tools}
+              label="Werkzeug"
+              name="tool"
+              handleChange={populateToolDimensions}
+              client:load
+            />
             <Select
               options={tool_types}
               label="Werkzeugart"
               name="tool_type"
+              selected={selectedToolType}
               handleChange={handleToolTypeChange}
               client:load
             />

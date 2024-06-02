@@ -20,7 +20,7 @@ export default function Select({
   const [selected, setSelected] = useState(selectedProp || options[0]);
 
   useEffect(() => {
-    if (selectedProp !== undefined) {
+    if (selectedProp !== undefined && selectedProp !== null) {
       setSelected(selectedProp);
     }
   }, [selectedProp]);
