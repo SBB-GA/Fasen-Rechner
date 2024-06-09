@@ -60,7 +60,6 @@ function VersatzrechnerContent() {
     document
       .getElementsByName("tool_type[name]")[0]
       .dispatchEvent(new Event("tool_type_change")); // triggering the enabling / disabling of the inputs which are needed for the selected tool
-    // a1.value = cutter.a1
     document.getElementById("a1").value = cutter.a1 ? cutter.a1 : "0";
     document.getElementById("a2").value = cutter.a2 ? cutter.a2 : "0";
     document.getElementById("d1").value = cutter.d1 ? cutter.d1 : "0";
@@ -69,6 +68,11 @@ function VersatzrechnerContent() {
     document.getElementById("l1").value = cutter.l1 ? cutter.l1 : "0";
     document.getElementById("l2").value = cutter.l2 ? cutter.l2 : "0";
     document.getElementById("l3").value = cutter.l3 ? cutter.l3 : "0";
+
+    // this triggers the update of the chamfer elements. Is needed because the tool angle could possibly be different if another tool is selected, thus we need to dispatch the event that the toolangel has changed.
+    document.getElementById("Ca").dispatchEvent(new Event("blur"))
+    document.getElementById("Oa").dispatchEvent(new Event("blur"))
+    console.debug("dispatched Event 'Blur' on Element 'Ca' and 'Oa'")
   };
 
   const handleToolTypeChange = (element) => {
@@ -186,7 +190,7 @@ function VersatzrechnerContent() {
                 id="offset-wall"
                 className="block w-full text-center py-2 bg-sky-100 border-black border-2 shadow-md"
               >
-                -0.1
+                -
               </p>
             </div>
             <div className="flex flex-col w-auto">
@@ -195,7 +199,7 @@ function VersatzrechnerContent() {
                 id="offset-floor"
                 className="block w-full text-center py-2 bg-sky-100 border-black border-2 shadow-md"
               >
-                -1.1
+                -
               </p>
             </div>
           </div>

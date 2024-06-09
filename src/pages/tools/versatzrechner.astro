@@ -103,9 +103,9 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent";
   // recalculate once any of the fields change
   chamfer_type.addEventListener("chamfer_type_change", () => {
     setTimeout(() => {
-      updateChamfer();
       ca.dispatchEvent(new Event("blur"));
       oa.dispatchEvent(new Event("blur"));
+      updateChamfer();
     }, 0);
   });
   offset_type.addEventListener("offset_type_change", () => {
@@ -121,67 +121,83 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent";
     // update chamfer radial
     // only need to do the calculation when the values actually changed
     // the trickery with all the parseFloat and stuff needs to be done to satisfy the typescript lsp (mimimi comparing string to number)
-    const angle = chamfer_type.value == "Regulär" ? a1 : a2;
-    if (parseFloat(ca.dataset.precise).toFixed(3) != ca.value) {
-      const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
-      const ca_value = ca.value;
-      const value = parseFloat(ca_value) * Math.tan(a1_rad / 2);
-      if (!isNaN(value)) {
-        cr.value = `${value.toFixed(3)}`;
-        cr.dataset.precise = value.toString();
-        ca.dispatchEvent(new Event("format_number_input"));
-        cr.dispatchEvent(new Event("format_number_input"));
+    setTimeout(() => {
+      const angle = chamfer_type.value == "Regulär" ? a1 : a2;
+      console.debug("Event 'Blur' caught on 'Ca'");
+      if (parseFloat(ca.dataset.precise).toFixed(3) != ca.value) {
+        const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
+        const ca_value = ca.value;
+        const value = parseFloat(ca_value) * Math.tan(a1_rad / 2);
+        if (!isNaN(value)) {
+          cr.value = `${value.toFixed(3)}`;
+          cr.dataset.precise = value.toString();
+          ca.dispatchEvent(new Event("format_number_input"));
+          cr.dispatchEvent(new Event("format_number_input"));
+          updateChamfer();
+        }
       }
-    }
+    }, 0);
   });
   cr.addEventListener("blur", () => {
     // update chamfer radial
-    const angle = chamfer_type.value == "Regulär" ? a1 : a2;
-    if (parseFloat(cr.dataset.precise).toFixed(3) != cr.value) {
-      const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
-      const cr_value = cr.value;
-      const value = parseFloat(cr_value) / Math.tan(a1_rad / 2);
-      if (!isNaN(value)) {
-        ca.value = `${value.toFixed(3)}`;
-        ca.dataset.precise = value.toString();
-        ca.dispatchEvent(new Event("format_number_input"));
-        cr.dispatchEvent(new Event("format_number_input"));
+    setTimeout(() => {
+      const angle = chamfer_type.value == "Regulär" ? a1 : a2;
+      console.debug("Event 'Blur' caught on 'Cr'");
+      if (parseFloat(cr.dataset.precise).toFixed(3) != cr.value) {
+        const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
+        const cr_value = cr.value;
+        const value = parseFloat(cr_value) / Math.tan(a1_rad / 2);
+        if (!isNaN(value)) {
+          ca.value = `${value.toFixed(3)}`;
+          ca.dataset.precise = value.toString();
+          ca.dispatchEvent(new Event("format_number_input"));
+          cr.dispatchEvent(new Event("format_number_input"));
+          updateChamfer();
+        }
       }
-    }
+    }, 0);
   });
 
   oa.addEventListener("blur", () => {
     // update chamfer radial
     // only need to do the calculation when the values actually changed
     // the trickery with all the parseFloat and stuff needs to be done to satisfy the typescript lsp (mimimi comparing string to number)
-    const angle = chamfer_type.value == "Regulär" ? a1 : a2;
-    if (parseFloat(oa.dataset.precise).toFixed(3) != oa.value) {
-      const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
-      const oa_value = oa.value;
-      const value = parseFloat(oa_value) * Math.tan(a1_rad / 2);
-      if (!isNaN(value)) {
-        or.value = `${value.toFixed(3)}`;
-        or.dataset.precise = value.toString();
-        oa.dispatchEvent(new Event("format_number_input"));
-        or.dispatchEvent(new Event("format_number_input"));
+    setTimeout(() => {
+      const angle = chamfer_type.value == "Regulär" ? a1 : a2;
+      console.debug("Event 'Blur' caught on 'Oa'");
+      if (parseFloat(oa.dataset.precise).toFixed(3) != oa.value) {
+        const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
+        const oa_value = oa.value;
+        const value = parseFloat(oa_value) * Math.tan(a1_rad / 2);
+        if (!isNaN(value)) {
+          or.value = `${value.toFixed(3)}`;
+          or.dataset.precise = value.toString();
+          oa.dispatchEvent(new Event("format_number_input"));
+          or.dispatchEvent(new Event("format_number_input"));
+          updateChamfer();
+        }
       }
-    }
+    }, 0);
   });
 
   or.addEventListener("blur", () => {
     // update chamfer radial
-    const angle = chamfer_type.value == "Regulär" ? a1 : a2;
-    if (parseFloat(or.dataset.precise).toFixed(3) != or.value) {
-      const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
-      const or_value = or.value;
-      const value = parseFloat(or_value) / Math.tan(a1_rad / 2);
-      if (!isNaN(value)) {
-        oa.value = `${value.toFixed(3)}`;
-        oa.dataset.precise = value.toString();
-        oa.dispatchEvent(new Event("format_number_input"));
-        or.dispatchEvent(new Event("format_number_input"));
+    setTimeout(() => {
+      const angle = chamfer_type.value == "Regulär" ? a1 : a2;
+      console.debug("Event 'Blur' caught on 'Or'");
+      if (parseFloat(or.dataset.precise).toFixed(3) != or.value) {
+        const a1_rad = (parseFloat(angle.value) * Math.PI) / 180;
+        const or_value = or.value;
+        const value = parseFloat(or_value) / Math.tan(a1_rad / 2);
+        if (!isNaN(value)) {
+          oa.value = `${value.toFixed(3)}`;
+          oa.dataset.precise = value.toString();
+          oa.dispatchEvent(new Event("format_number_input"));
+          or.dispatchEvent(new Event("format_number_input"));
+          updateChamfer();
+        }
       }
-    }
+    }, 0);
   });
 
   // when tool angles change update radial and axial chamfer / offsets
@@ -201,46 +217,34 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent";
   function updateChamfer() {
     // these values would need to be retrieved from the actual inputs
     // Number Inputs for tool
-    const d1 = parseFloat(
-      (document.getElementById("d1") as HTMLInputElement).value,
-    );
-    const d2 = parseFloat(
-      (document.getElementById("d2") as HTMLInputElement).value,
-    );
-    const d3 = parseFloat(
-      (document.getElementById("d3") as HTMLInputElement).value,
-    );
 
-    const l1 = parseFloat(
-      (document.getElementById("l1") as HTMLInputElement).value,
-    );
-    const l2 = parseFloat(
-      (document.getElementById("l2") as HTMLInputElement).value,
-    );
-    const l3 = parseFloat(
-      (document.getElementById("l3") as HTMLInputElement).value,
-    );
+    const retrieveValue = (id: string) => {
+      const value = parseFloat(
+        (document.getElementById(id) as HTMLInputElement).value,
+      );
+      return isNaN(value) ? 0 : value;
+    };
 
-    const a1 = parseFloat(
-      (document.getElementById("a1") as HTMLInputElement).value,
-    );
-    const a2 = parseFloat(
-      (document.getElementById("a2") as HTMLInputElement).value,
-    );
+    const d1 = retrieveValue("d1");
+    const d2 = retrieveValue("d2");
+    const d3 = retrieveValue("d3");
+
+    const l1 = retrieveValue("l1");
+    const l2 = retrieveValue("l2");
+    // const l3 = retrieveValue("l3")
+    //
+    // const a1 = parseFloat(
+    //   (document.getElementById("a1") as HTMLInputElement).value,
+    // );
+    // const a2 = parseFloat(
+    //   (document.getElementById("a2") as HTMLInputElement).value,
+    // );
 
     // here we need to do some trickery to calculate the radial / axial components based on whats entered
-    const ca = parseFloat(
-      (document.getElementById("Ca") as HTMLInputElement).value,
-    );
-    const cr = parseFloat(
-      (document.getElementById("Cr") as HTMLInputElement).value,
-    );
-    const oa = parseFloat(
-      (document.getElementById("Oa") as HTMLInputElement).value,
-    );
-    const or = parseFloat(
-      (document.getElementById("Or") as HTMLInputElement).value,
-    );
+    const ca = retrieveValue("Ca");
+    const cr = retrieveValue("Cr");
+    const oa = retrieveValue("Oa");
+    const or = retrieveValue("Or");
 
     const chamfer_type = (
       document.getElementsByName("chamfer_type[name]")[0] as HTMLInputElement
@@ -257,11 +261,10 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent";
     if (chamfer_type == "Regulär") {
       if (offset_type == "Oberseite") {
         // some meth
-        wall_offset = - (cr + or);
-        floor_offset = - (l2 - oa);
-        alert("regulär oberseite triggered")
+        wall_offset = -(cr + or);
+        floor_offset = l2 != 0 ? -(l2 - oa) : - (l1 - oa);
       } else if (offset_type == "Unterseite") {
-        wall_offset = - (d1/2 - d2/2 - or)
+        wall_offset = -(d1 / 2 - d2 / 2 - or);
         floor_offset = -(ca + oa);
       } else {
         alert("Something went wrong 1000");
@@ -271,22 +274,44 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent";
       // TODO: seems to work for Fasenfräser and Kombi, not for Schwalbenschwanz
       if (offset_type == "Oberseite") {
         // TODO: Add the stump into calculation
-        wall_offset = - (d1/2 - d3/2 - or)
-        floor_offset = - (l1 - oa - ca)
+        wall_offset = -(d1 / 2 - d3 / 2 - or);
+        floor_offset = -(l1 - oa - ca);
       } else if (offset_type == "Unterseite") {
         // TODO: Add the stump into calculation
-        wall_offset = - (cr + or)
-        floor_offset = - (l2 + oa)
+        wall_offset = -(cr + or);
+        floor_offset = -(l2 + oa);
       } else {
         alert("Something went wrong 2000");
       }
     } else {
-      alert("Something went wrong 3000")
+      alert("Something went wrong 3000");
     }
 
-    document.getElementById("offset-wall").innerHTML = wall_offset.toString()
-    document.getElementById("offset-floor").innerHTML = floor_offset.toString()
+    const formatOutput = (value: number) => {
+      if (value.toString() === "") {
+        return;
+      }
 
-    console.log(`Wandaufmass: ${wall_offset}, Bodenaufmass: ${floor_offset}`);
+      const valueArray = value.toString().split(".");
+      // needed to catch any anomalies which do not produce a correct number
+      if (valueArray.length > 2) {
+        return "";
+      }
+
+      if (
+        valueArray.length === 1 ||
+        valueArray[1] === "" ||
+        parseFloat(valueArray[1]) === 0
+      ) {
+        return `${valueArray[0]}.0`;
+      }
+
+      return `${parseFloat(parseFloat(value.toString()).toFixed(3))}`;
+    };
+
+    document.getElementById("offset-wall").innerHTML =
+      formatOutput(wall_offset);
+    document.getElementById("offset-floor").innerHTML =
+      formatOutput(floor_offset);
   }
 </script>
