@@ -31,7 +31,7 @@ function CustomGeometry({ points }) {
     <>
       <mesh>
         <bufferGeometry attach="geometry" {...geometry} />
-        <meshPhongMaterial color="orange" />
+        <meshPhongMaterial color="#6877b0" />
       </mesh>
     </>
   );
