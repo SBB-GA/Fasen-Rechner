@@ -1,5 +1,6 @@
 import Select from "../components/Select";
 import Input from "../components/Input";
+import ToolRender from "../components/ToolRender";
 import { useState, useEffect } from "react";
 
 import cutters from "../../public/cutters.json";
@@ -153,7 +154,7 @@ function VersatzrechnerContent() {
           </div>
         </section>
         <div>
-          <img src="/debug_placeholder_img.png" alt="" />
+          <ToolRender client:load/>
         </div>
         <section className="flex flex-col gap-4">
           <div className="text-center">
@@ -205,7 +206,7 @@ function VersatzrechnerContent() {
           </div>
         </section>
         <div>
-          <img src="/debug_placeholder_img.png" alt="" />
+          <ToolRender client:load />
         </div>
       </div>
     </>
