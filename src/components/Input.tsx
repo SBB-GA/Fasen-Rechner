@@ -11,6 +11,10 @@ const NumberInput: React.FC<Props> = ({ label, identifier, disabled = false }) =
   useEffect(() => {
     function formatNumber() {
       const numberInput = document.getElementById(identifier) as HTMLInputElement;
+      // dispatch event to signal that a field changed (used to detect number input changes)
+      window.dispatchEvent(new Event('number_input_changed'))
+      console.log('number_input_changed dispatched from input.tsx')
+
       const valueIn = numberInput.value;
 
       if (valueIn === "") {
