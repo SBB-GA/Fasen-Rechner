@@ -1,6 +1,7 @@
 import Select from "../components/Select";
 import Input from "../components/Input";
 import ToolRender from "../components/ToolRender";
+import ChamferRender from "../components/ChamferRender";
 import { useState, useEffect } from "react";
 
 import cutters from "../../public/cutters.json";
@@ -206,7 +207,7 @@ function VersatzrechnerContent() {
           </div>
         </section>
         <div>
-          <ToolRender client:load />
+          <ChamferRender client:load />
         </div>
       </div>
     </>

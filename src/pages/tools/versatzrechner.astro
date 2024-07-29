@@ -262,7 +262,7 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent";
       if (offset_type == "Oberseite") {
         // some meth
         wall_offset = -(cr + or);
-        floor_offset = l2 != 0 ? -(l2 - oa) : - (l1 - oa);
+        floor_offset = l2 != 0 ? -(l2 - oa) : -(l1 - oa);
       } else if (offset_type == "Unterseite") {
         wall_offset = -(d1 / 2 - d2 / 2 - or);
         floor_offset = -(ca + oa);
@@ -313,5 +313,9 @@ import VersatzrechnerContent from "../../apps/VersatzrechnerContent";
       formatOutput(wall_offset);
     document.getElementById("offset-floor").innerHTML =
       formatOutput(floor_offset);
+
+    // emit event that triggers the visualization to update
+    window.dispatchEvent(new Event('offset_output_changed'))
+    console.debug('dispatched Event: "offset_output_changed"')
   }
 </script>
