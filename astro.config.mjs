@@ -5,7 +5,7 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https:/Schnetzubroot.github.io',
-  base: 'VR1',
+  site: 'https:/SBB-GA.github.io',
+  base: 'Fasen-Rechner',
   integrations: [tailwind(), react()]
 });
